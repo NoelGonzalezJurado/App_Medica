@@ -63,6 +63,7 @@ export default function App() {
             symptoms={symptoms}
             apiKey={apiKey}
             onAnalysis={setAiAnalysis}
+            isDemoUser={user?.email === 'diariomedico.demo@gmail.com'}
           />
         )}
         {tab === 'report' && (

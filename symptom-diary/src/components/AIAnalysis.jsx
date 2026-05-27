@@ -42,18 +42,57 @@ function MarkdownBlock({ text }) {
   );
 }
 
-export default function AIAnalysis({ symptoms, apiKey, onAnalysis }) {
+const DEMO_ANALYSIS = `## 📊 Resumen General
+Se han registrado 24 síntomas a lo largo de 30 días. El diario refleja dos periodos diferenciados: un episodio de alta carga de estrés durante las semanas 2 y 3 del mes, con migrañas de intensidad severa, y un proceso catarral en los últimos 10 días con congestión, fiebre y fatiga progresiva actualmente en resolución.
+
+## 🔄 Patrones Identificados
+- Dolor de cabeza recurrente: 6 episodios en 30 días, concentrados en la primera mitad del mes y en los últimos 3 días.
+- Migraña de alta intensidad (8–9/10) asociada sistemáticamente a acumulación de estrés y privación de sueño los días previos.
+- Episodio infeccioso claro a partir del día 21: congestión nasal → dolor de garganta → fiebre → fatiga severa → tos, con mejora gradual confirmada.
+- Fatiga recurrente: 5 registros a lo largo del mes, con picos coincidentes con los episodios de migraña y el resfriado.
+
+## 🔗 Correlaciones entre Síntomas
+- Estrés + falta de sueño → migraña severa: patrón reproducido en dos ocasiones (días 6 y 15 del registro). En ambos casos la migraña aparece 1–2 días después del episodio de ansiedad/insomnio.
+- Migraña intensa (día 15, 9/10) → vómitos al día siguiente: secuencia directamente anotada en las notas.
+- Café/alcohol → dolor de cabeza leve (4–5/10): registrado en dos ocasiones independientes.
+
+## 📈 Tendencias de Severidad
+Los síntomas neurológicos (migraña, cefalea) mostraron pico máximo en la semana 2–3 y han bajado en la última semana. El proceso catarral tocó fondo hace 5 días (fatiga 8/10, fiebre) y está en descenso claro: fatiga actual 5/10, tos 4/10. Tendencia general: mejora.
+
+## ⚠️ Puntos de Atención Prioritaria
+- Migraña recurrente de intensidad severa (8–9/10) con fotofobia y vómitos asociados: requiere valoración neurológica para descartar migraña crónica y valorar profilaxis.
+- Patrón estrés → insomnio → migraña repetido en menos de un mes: posible ciclo que se autoperpetúa.
+
+## 💡 Recomendaciones para la Consulta
+- Llevar este diario completo con las fechas de los episodios de migraña y los desencadenantes anotados.
+- Preguntar al médico sobre profilaxis de migraña si los episodios severos se repiten mensualmente.
+- Comentar el patrón estrés/sueño como posible factor desencadenante crónico.
+- Confirmar que el proceso catarral está en resolución o si persisten síntomas que requieran revisión.
+
+## 🌿 Observaciones de Contexto
+El consumo de café aparece vinculado a dos episodios de cefalea leve. Reducir o regularizar la ingesta podría ser un ajuste sencillo. El ejercicio físico (registrado una vez) no generó síntomas graves más allá de dolor muscular esperado. Los episodios de mayor severidad coinciden con periodos de alta carga laboral según las notas.
+
+---
+⚠️ Este análisis es orientativo y no reemplaza el diagnóstico médico profesional.`;
+
+export default function AIAnalysis({ symptoms, apiKey, onAnalysis, isDemoUser }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
-  const canAnalyze = symptoms.length >= 3 && apiKey;
+  const canAnalyze = symptoms.length >= 3 && (apiKey || isDemoUser);
 
   async function run() {
     setLoading(true);
     setError(null);
     try {
-      const text = await analyzeSymptoms(symptoms, apiKey);
+      let text;
+      if (isDemoUser) {
+        await new Promise(r => setTimeout(r, 2500));
+        text = DEMO_ANALYSIS;
+      } else {
+        text = await analyzeSymptoms(symptoms, apiKey);
+      }
       setResult(text);
       onAnalysis?.(text);
     } catch (err) {
@@ -78,7 +117,7 @@ export default function AIAnalysis({ symptoms, apiKey, onAnalysis }) {
           </div>
         </div>
 
-        {!apiKey && (
+        {!apiKey && !isDemoUser && (
           <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
             <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700">
