@@ -2,7 +2,7 @@
 
 A personal symptom tracker that helps you log daily health events, visualize trends, detect patterns with AI, and generate PDF reports to share with your doctor.
 
-**Live demo:** `[URL — pending Vercel deploy]`  
+**Live demo:** https://symptom-diary-psi.vercel.app  
 **Demo account:** `diariomedico.demo@gmail.com` / `Demo1234!`
 
 ---
