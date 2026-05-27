@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command npm -ErrorAction SilentlyContinue)",
+      "PowerShell($env:PATH -split \";\")",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\ngonz\\\\Desktop\\\\App_Sintomas_Medico\\\\v0\\\\src\\\\components\")",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\ngonz\\\\Desktop\\\\App_Sintomas_Medico\\\\v0\\\\src\\\\hooks\")",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\ngonz\\\\Desktop\\\\App_Sintomas_Medico\\\\v0\\\\src\\\\utils\")",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\ngonz\\\\Desktop\\\\App_Sintomas_Medico\\\\v0\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"c:\\\\Users\\\\ngonz\\\\Desktop\\\\App_Sintomas_Medico\\\\v0\\\\\", \"\"\\) })"
+    ]
+  }
+}
